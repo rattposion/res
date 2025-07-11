@@ -40,7 +40,8 @@ import {
   Smile,
   Zap,
   Shield,
-  Key
+  Key,
+  Reply
 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';

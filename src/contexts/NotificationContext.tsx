@@ -49,6 +49,8 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [notificationIdCounter, setNotificationIdCounter] = useState(0);
+  const [toastIdCounter, setToastIdCounter] = useState(0);
 
   // Carregar notificações do localStorage
   useEffect(() => {
@@ -74,9 +76,12 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => {
+    const newId = `notification_${Date.now()}_${notificationIdCounter}`;
+    setNotificationIdCounter(prev => prev + 1);
+    
     const newNotification: Notification = {
       ...notification,
-      id: Date.now().toString(),
+      id: newId,
       timestamp: new Date(),
       read: false
     };
@@ -92,9 +97,12 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   };
 
   const addToast = (toast: Omit<Toast, 'id'>) => {
+    const newId = `toast_${Date.now()}_${toastIdCounter}`;
+    setToastIdCounter(prev => prev + 1);
+    
     const newToast: Toast = {
       ...toast,
-      id: Date.now().toString()
+      id: newId
     };
 
     setToasts(prev => [...prev, newToast]);
